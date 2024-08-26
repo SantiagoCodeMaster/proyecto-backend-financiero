@@ -44,4 +44,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $primaryKey = 'id';
+
+    public function user(){
+        return $this->belongsTo(Empresa::class,'id_empresa');
+    }
 }
