@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EstadoFinanciero extends Model
 {
+    protected $table = "estado_financiero";
     protected $primaryKey = 'id_estado';
 
     // Relación inversa: pertenece a una Empresa

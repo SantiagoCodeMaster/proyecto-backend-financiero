@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class IngresosUtilidadesGastos extends Model
+class Producto extends Model
 {
-    protected $primaryKey = 'id_iug';
+    protected $table = "productos";
+    protected $primaryKey = 'id_producto';
 
     // Relación inversa: pertenece a una Empresa
     public function empresa()

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patrimonio extends Model
 {
+    protected $table = 'patrimonio';
     protected $primaryKey = 'id_patrimonio';
 
     // Relación inversa: pertenece a una Empresa

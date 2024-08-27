@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Movimientos extends Model
+class IndicadorFinanciero extends Model
 {
-    protected $primaryKey = 'id_movimiento';
+    protected $table = 'indicadores_financieros';
+    protected $primaryKey = 'id_indicador';
 
     // Relación inversa: pertenece a una Empresa
     public function empresa()
