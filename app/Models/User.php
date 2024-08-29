@@ -45,9 +45,6 @@ class User extends Authenticatable
         ];
     }
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id'; 
 
-    public function user(){
-        return $this->belongsTo(Empresa::class,'id_empresa');
-    }
 }

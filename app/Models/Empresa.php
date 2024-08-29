@@ -51,4 +51,7 @@ class Empresa extends Model
     {
         return $this->hasMany(IndicadorFinanciero::class, 'id_empresa');
     }
+    
+
+    
 }
