@@ -15,4 +15,14 @@ class Patrimonio extends Model
     {
         return $this->belongsTo(Empresa::class, 'id_empresa');
     }
+    protected $fillable = [
+         'fecha',
+         'capital_emitido',
+         'prima_emision_capital',
+         'reservas_utilidades_acumuladas',
+         'otro_resultado_integral',
+         'utilidad_periodo',
+         'patrimonio_atributable_controladoras',
+         'participaciones_no_controladoras'
+    ];
 }

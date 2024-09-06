@@ -14,5 +14,11 @@ class Cliente extends Model
     public function empresa()
     {
         return $this->belongsTo(Empresa::class, 'id_empresa');
-    }
+    } 
+
+    protected $fillable = [
+        "nombre_cliente",
+        "cedula_nit_cliente",
+        'compras_mes'
+    ];
 }

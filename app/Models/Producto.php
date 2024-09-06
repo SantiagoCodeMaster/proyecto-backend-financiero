@@ -15,4 +15,10 @@ class Producto extends Model
     {
         return $this->belongsTo(Empresa::class, 'id_empresa');
     }
+    protected $fillable = [
+        'fecha',
+        'nombre_producto',
+        'precio_producto',
+        'costos_produccion',
+    ];
 }

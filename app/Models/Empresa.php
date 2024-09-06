@@ -50,8 +50,14 @@ class Empresa extends Model
     public function indicadoresFinancieros()
     {
         return $this->hasMany(IndicadorFinanciero::class, 'id_empresa');
-    }
-    
+    } 
 
+    protected $fillable = [
+        'nombre_empresa',
+        'nit',
+        'rublo',
+    ];
+    
+ 
     
 }

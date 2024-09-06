@@ -10,104 +10,39 @@
     <div class="min-h-screen flex flex-col">
         <header class="bg-gray-800 dark:bg-gray-900 relative shadow-md">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <h1 class="text-3xl font-bold text-white tracking-tight">Llenar el formulario, paso 2</h1>
+                <h1 class="text-3xl font-bold text-white tracking-tight">Llenar el formulario</h1>
                 
                 <div class="flex items-center space-x-6">
                     <h2 class="text-xl font-semibold text-white">Artificial Financial Calculation</h2>
                 </div>
-            </div> 
+            </div>   
         </header>
-       
-        <br>
+
+        <div class="px-6 py-4">
+            <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Querido usuario</h1>
+            <h3 class="mb-2">En este formulario tendrá la oportunidad de llenar los datos de la empresa que usted representa. Los datos financieros son de rigurosa seguridad, por lo mismo estos datos nadie más que usted tendrá acceso.</h3>
+            <h3 class="mb-2">Como representante de su empresa, usted será el responsable de guardar los datos de sesión de inicio, guarde el número de NIT y si llega a haber un cambio del NIT, usted será el responsable de volver a actualizarlo en la web.</h3>
+            <h3 class="mb-4">Tenga en cuenta que la contraseña debe ser la misma que registraron en el apartado de registro.</h3>
+        </div>
+
         <!-- Main Form Content -->
         <main class="flex-grow flex flex-col items-center justify-center px-6">
-            <form action="{{ route('formulario2') }}" method="POST" class="w-full max-w-lg space-y-4">
+            <form action="{{ route('formulario1.store') }}" method="POST" class="w-full max-w-lg space-y-4">
                 @csrf
-   
                 <div>
-                    <label for="empresa" class="block text-gray-800 dark:text-white mb-2">efectivo y equivalentes a efectivo:</label>
-                    <textarea id="efectivo" name="efectivo" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
+                    <label for="nombre_empresa" class="block text-gray-800 dark:text-white mb-2">Nombre de la empresa/ razón social:</label>
+                    <input id="nombre_empresa" name="nombre_empresa" type="text" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"required>
                 </div>
 
                 <div>
-                    <label for="deudores comerciales y otras cuentas por pagar" class="block text-gray-800 dark:text-white mb-2">deudores comerciales y otras cuentas por pagar:</label>
-                    <textarea id="deudores" name="deudores" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
+                    <label for="nit" class="block text-gray-800 dark:text-white mb-2">Número de NIT:</label>
+                    <input id="nit" name="nit" type="number" min="0" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white" required>
+
                 </div>
 
                 <div>
-                    <label for="Inventarios " class="block text-gray-800 dark:text-white mb-2">Inventarios:</label>
-                    <textarea id="Inventarios " name="Inventarios " class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Activos biológicos" class="block text-gray-800 dark:text-white mb-2">Activos biológicos:</label>
-                    <textarea id="Activos biológicos" name="Activos biológicos" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Otros activos" class="block text-gray-800 dark:text-white mb-2">Otros activos:</label>
-                    <textarea id="Otros activos" name="Otros activos" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                
-                <div>
-                    <label for="Activos no corrientes mantenidos para la venta" class="block text-gray-800 dark:text-white mb-2">Activos no corrientes mantenidos para la venta:</label>
-                    <textarea id="Activos no corrientes mantenidos para la venta" name="Activos no corrientes mantenidos para la venta" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Deudores comerciales y otras cuentas por cobrar" class="block text-gray-800 dark:text-white mb-2">Deudores comerciales y otras cuentas por cobrar:</label>
-                    <textarea id="Deudores comerciales y otras cuentas por cobrar" name="Deudores comerciales y otras cuentas por cobrar" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Inversiones Asociadas" class="block text-gray-800 dark:text-white mb-2">Inversiones Asociadas:</label>
-                    <textarea id="Inversiones Asociadas" name="Inversiones Asociadas" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Propiedades, Planta y Equipo" class="block text-gray-800 dark:text-white mb-2">Propiedades, Planta y Equipo:</label>
-                    <textarea id="Propiedades, Planta y Equipo" name="Propiedades, Planta y Equipo" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Propiedades, Planta y Equipo" class="block text-gray-800 dark:text-white mb-2">Propiedades, Planta y Equipo:</label>
-                    <textarea id="Propiedades, Planta y Equipo" name="Propiedades, Planta y Equipo" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Activos por Derechos" class="block text-gray-800 dark:text-white mb-2">Activos por Derechos:</label>
-                    <textarea id="Activos por Derechos" name="Propiedades, Planta y Equipo" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Propiedades de Inversión" class="block text-gray-800 dark:text-white mb-2">Propiedades de Inversión:</label>
-                    <textarea id="Propiedades de Inversión" name="Propiedades de Inversión" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Plusvalía" class="block text-gray-800 dark:text-white mb-2">Plusvalía:</label>
-                    <textarea id="Plusvalía" name="Plusvalía" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Activos Intangibles" class="block text-gray-800 dark:text-white mb-2">Activos Intangibles:</label>
-                    <textarea id="Activos Intangibles" name="Activos Intangibles" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Activo por Impuesto Diferido" class="block text-gray-800 dark:text-white mb-2">Activo por Impuesto Diferido:</label>
-                    <textarea id="Activo por Impuesto Diferido" name="Activo por Impuesto Diferido" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Otros Activos No Corrientes" class="block text-gray-800 dark:text-white mb-2">Otros Activos No Corrientes:</label>
-                    <textarea id="Otros Activos No Corrientes" name="Otros Activos No Corrientes" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
-                </div>
-
-                <div>
-                    <label for="Obligaciones Financieras Corrientes" class="block text-gray-800 dark:text-white mb-2">Obligaciones Financieras Corrientes:</label>
-                    <textarea id="Obligaciones Financieras Corrientes" name="Otros Activos No Corrientes" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"></textarea>
+                    <label for="rublo" class="block text-gray-800 dark:text-white mb-2">Actividad económica:</label>
+                    <input id="rublo" name="rublo" class="w-full border border-gray-300 dark:border-gray-700 rounded-md p-2 dark:bg-gray-800 dark:text-white"required>
                 </div>
 
                 <div class="flex justify-end">
@@ -115,6 +50,7 @@
                         Siguiente
                     </button>
                 </div>
+                
                 
             </form>
         </main>
@@ -125,4 +61,4 @@
         </footer>
     </div>
 </body>
-</html> 
+</html>

@@ -72,5 +72,5 @@
             <!-- Footer content removed -->
         </footer>
     </div>
-</body>
+</body> 
 </html>
