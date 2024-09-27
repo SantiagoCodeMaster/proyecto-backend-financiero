@@ -30,7 +30,7 @@
             
                 <div class="mb-4">
                     <label for="razon_corriente" class="block text-sm font-medium text-gray-700">Razón Corriente:</label>
-                    <input type="number" id="razon_corriente" name="razon_corriente" step="0.00001" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <input type="number" id="razon_corriente" name="razon_corriente" step="0.00000001" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 </div>
             
                 <div class="mb-4">

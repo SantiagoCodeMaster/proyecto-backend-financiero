@@ -12,7 +12,7 @@ use App\Models\Patrimonio;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-
+use App\Models\DatoMacroeconomico;
 
 class FormController extends Controller
 {
@@ -34,16 +34,16 @@ class FormController extends Controller
     }
 
     public function showFormulario5() {
-        return view('formulario5');
+        return view('formulario5'); 
     }
 
     public function showFormulario6() {
         return view('formulario6');
     }
-
-    public function showFormulario7() {
-        return view('formulario7');
-    }
+   
+    public function showFormulario7(){
+        RETURN VIEW('formulario7');
+    } 
 
     public function showFormulario8() {
         return view('formulario8');
@@ -52,11 +52,14 @@ class FormController extends Controller
     public function showFormulariocliente() {
         return view('formulario_cliente');
     }
+    public function showDatos(){
+        return view('datos_macro');
+    }
 
     // Procesar formularios
     public function survey1(Request $request) {
         // Validar los datos del request
-        $request->validate([
+        $request->validate([ 
             'nombre_empresa' => 'required|string|max:255',
             'nit' => 'required|string|max:20',
             'rublo' => 'required|string|max:255',
@@ -145,7 +148,7 @@ class FormController extends Controller
     $request->session()->put('estado_financiero', $request->only([
         'fecha',
         'efectivo_equivalentes',
-        'deudores_comerciales',
+        'deudores_comerciales',  
         'inventarios',
         'activos_biologicos',
         'otros_activos_corrientes',
@@ -189,7 +192,7 @@ class FormController extends Controller
             'utilidad_periodo' => 'required|numeric',
             'patrimonio_atributable_controladoras' => 'required|numeric',
             'participaciones_no_controladoras' => 'required|numeric',
-        ]);
+        ]); 
 
         // Ingresar los datos a la base de datos
         Patrimonio::create($request->only([
@@ -411,4 +414,23 @@ class FormController extends Controller
         // Mostrar un mensaje emergente de confirmación
         return redirect()->route('dashboard')->with('status', 'Datos del cliente guardados exitosamente!');
     }
+
+    public function datosMacro(Request $request){
+         // Validar los datos del request
+    $request->validate([
+        'fecha' => 'required|date',
+        'pib' => 'required|numeric',
+        'inflacion' => 'required|numeric',
+        'tasa_interes' => 'required|numeric',
+        'tasa_desempleo' => 'required|numeric',
+    ]);
+
+    // Ingresar los datos a la base de datos
+    DatoMacroeconomico::create($request->only([
+        'fecha','pib', 'inflacion', 'tasa_interes', 'tasa_desempleo'
+    ]));
+
+    // Mostrar un mensaje emergente de confirmación
+    return redirect()->route('dashboard');
+   }
 }

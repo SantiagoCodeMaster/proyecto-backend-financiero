@@ -52,7 +52,7 @@
     </div>
 
     <div class="mb-4">
-        <label for="deudores_comerciales" class="block text-sm font-medium text-gray-700">Deudores comerciales:</label>
+        <label for="deudores_comerciales" class="block text-sm font-medium text-gray-700">Cuentas comerciales por cobrar y otras cuentas por cobrar:</label>
         <input type="number" id="deudores_comerciales" name="deudores_comerciales" step="0.01" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
     </div>
 

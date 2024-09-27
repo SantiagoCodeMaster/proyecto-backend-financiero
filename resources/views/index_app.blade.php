@@ -70,7 +70,8 @@
 
         <footer class="bg-gray-800 dark:bg-gray-900 py-6 text-center text-sm text-white">
             <!-- Footer content removed -->
+            <p>Sotfware version 1.0</p>
         </footer>
-    </div>
+    </div> 
 </body> 
 </html>

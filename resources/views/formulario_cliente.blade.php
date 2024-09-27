@@ -59,10 +59,10 @@
   
                 <label for="nombre_cliente">Nombre del Cliente:</label>
                 <input type="text" id="nombre_cliente" name="nombre_cliente" required>
-            
+                <br>
                 <label for="cedula_nit_cliente">Cédula o NIT:</label>
                 <input type="number" id="cedula_nit_cliente" name="cedula_nit_cliente" required>
-            
+                <br>
                 <label for="compras_mes">Compras del Mes:</label>
                 <input type="number" id="compras_mes" name="compras_mes" step="0.01" required>
                 
