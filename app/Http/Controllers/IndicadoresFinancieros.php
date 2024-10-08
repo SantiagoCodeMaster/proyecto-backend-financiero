@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\EstadoFinanciero;
+use App\Models\IngresoUtilidadGasto;
+use App\Models\Patrimonio;
 use Illuminate\Http\Request;
 
 class IndicadoresFinancieros extends Controller
@@ -19,69 +21,67 @@ class IndicadoresFinancieros extends Controller
      }
      public function razon_corriente(){
         
-        // Obtén los datos para la primera lista
-        $datosPrimeraLista = EstadoFinanciero::where('fecha', '2023-06-30')->get([
-            'obligaciones_financieras_corrientes',
-            'pasivos_por_derecho_corriente',
-            'proveedores_cuentas_pagar_corriente',
-            'impuestos_por_pagar_corriente',
-            'pasivo_beneficios_empleados_corriente',
-            'provisiones_corriente'
-        ]);
-     
-        // Procesa los datos de la primera lista
-        $lista1 = $datosPrimeraLista->map(function ($item) {
-            return [
-                'obligaciones_financieras_corrientes' => $item->obligaciones_financieras_corrientes,
-                'pasivos_por_derecho_corriente' => $item->pasivos_por_derecho_corriente,
-                'proveedores_cuentas_pagar_corriente' => $item->proveedores_cuentas_pagar_corriente,
-                'impuestos_por_pagar_corriente' => $item->impuestos_por_pagar_corriente,
-                'pasivo_beneficios_empleados_corriente' => $item->pasivo_beneficios_empleados_corriente,
-                'provisiones_corriente' => $item->provisiones_corriente
-            ];
-        });
+       // Obtén los datos para la primera lista
+    $datosPrimeraLista = Patrimonio::where('fecha', '2023-12-31')->get([
+      'capital_emitido',
+      
+  ]);
+
+  // Procesa los datos de la primera lista
+  $patrimonio = $datosPrimeraLista->map(function ($item) {
+      return [
+          $item->capital_emitido,
+        
+      ];
+  })->flatten()->toArray(); // Convierte en array
+
+  
+  
+  $datos = IngresoUtilidadGasto::where('fecha', '2023-12-12')->get([
+    'dividendos',
+    'utilidad_neta_periodo',
     
-       // Obtén los datos para la segunda lista
-       $datosSegundaLista = EstadoFinanciero::where('fecha', '2023-06-30')->get([
-          'efectivo_equivalentes',
-          'deudores_comerciales',
-          'activos_biologicos',
-          'otros_activos_corrientes',
-          'inventarios'
-       ]);
+]);
 
-         // Inicializa la variable para los inventarios
-         $inventarios = [];
 
-        // Procesa los datos de la segunda lista
-        $lista2 = $datosSegundaLista->map(function ($item) use (&$inventarios) {
-        // Guarda el valor de inventarios en la variable separada
-        $inventarios[] = $item->inventarios;
+// Procesa los datos
+$datos2 = $datos->map(function ($item) {
+    return [
+        $item->dividendos,
+        $item->utilidad_neta_periodo
+    ];
+    })->flatten()->toArray(); // Convierte en array
 
-       // Retorna los demás valores excluyendo inventarios
-       return [
-         'efectivo_equivalentes' => $item->efectivo_equivalentes,
-         'deudores_comerciales' => $item->deudores_comerciales,
-         'activos_biologicos' => $item->activos_biologicos,
-         'otros_activos_corrientes' => $item->otros_activos_corrientes,
-          ];
-        });
 
-        print_r($lista2[0]);
-        echo "prueba";
-        print_r($inventarios);
-    
-         // Suma todos los valores de la primera lista
-          $lista_suma1 = $lista1->flatten()->sum(); // Usamos el método de colección sum()
 
-        // Suma todos los valores de la segunda lista
-          $lista_suma2 = $lista2->flatten()->sum(); // Usamos el método de colección sum()
 
-          $inventarioValor = $inventarios[0];
 
-        //hacemos el calculo de la prueba acida
-        $resultado = $lista_suma2 - $inventarioValor / $lista_suma1;
-        print_r($resultado);
+$dividendos = $datos2[0];
+$utilidad_neta = $datos2[1];
+$p_total = $patrimonio[0];
+
+$resultado = $dividendos + $utilidad_neta / $p_total;
+print_r($resultado);
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+         
+
+       
+
+        
 
         }
        

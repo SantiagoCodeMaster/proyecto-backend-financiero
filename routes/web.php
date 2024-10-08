@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Route;
 use App\Models\EstadoFinanciero;
 use App\Models\IndicadorFinanciero;
 use Illuminate\Support\Facades\DB;
+use App\Models\DatoMacroeconomico;
+use App\Models\Movimiento;
+use App\Models\Patrimonio;
+use App\Models\IngresoUtilidadGasto;
+
 
 Route::get('/', function () {
     return view('index_app');
@@ -46,7 +51,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/formulario_cliente',[FormController::class,'showFormulariocliente'])->name('formulario_cliente');
     Route::post('/formulario_cliente',[FormController::class,'saveClientData'])->name('formulario_cliente.store');
-
+ 
 }); 
 
 Route::get('/show',[IndicadoresFinancieros::class,'index'])->name('show');
@@ -61,10 +66,41 @@ Route::get('/estado-financiero', function () {
     return response()->json($estadoFinanciero);
 });
 
+Route::get('/data_m', function () {
+    // Obtiene todos los datos de la tabla estado_financiero
+    $datos_macro = DatoMacroeconomico::all();
+    
+    // Retorna los datos en formato JSON
+    return response()->json($datos_macro);
+});
+
+Route::get('/patrimonio',function(){
+    // Obtiene todos los datos de la tabla estado_financiero
+    $patrimonio = Patrimonio::all();
+    
+    // Retorna los datos en formato JSON
+    return response()->json($patrimonio);
+ 
+});
+
+Route::get('/movimientos',function(){
+    $movimientos = IngresoUtilidadGasto::all();
+    
+    // Retorna los datos en formato JSON
+    return response()->json($movimientos);
+
+});
+
+Route::get('/indicadores',function(){
+    $indicadores = IndicadorFinanciero::all();
+
+    //reornar los datos en formato JSON 
+    return response()->json($indicadores);
+});
+
 Route::get('/datos_macro',[FormController::class,'showDatos'])->name('datos_macro');
 Route::post('/datos_macro',[FormController::class,'datosMacro'])->name('datos_macro.store');
 
 
-
-
+ 
 require __DIR__.'/auth.php';

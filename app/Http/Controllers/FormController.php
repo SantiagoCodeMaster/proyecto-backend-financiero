@@ -397,7 +397,6 @@ class FormController extends Controller
     }
 
     
-
     public function saveClientData(Request $request) {
         // Validar los datos del request
         $request->validate([
