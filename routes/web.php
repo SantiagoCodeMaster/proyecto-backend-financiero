@@ -51,6 +51,10 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/formulario_cliente',[FormController::class,'showFormulariocliente'])->name('formulario_cliente');
     Route::post('/formulario_cliente',[FormController::class,'saveClientData'])->name('formulario_cliente.store');
+
+    Route::get('/algorit',function(){
+        return view('algorit');
+    });
  
 }); 
 
@@ -101,6 +105,4 @@ Route::get('/indicadores',function(){
 Route::get('/datos_macro',[FormController::class,'showDatos'])->name('datos_macro');
 Route::post('/datos_macro',[FormController::class,'datosMacro'])->name('datos_macro.store');
 
-
- 
 require __DIR__.'/auth.php';

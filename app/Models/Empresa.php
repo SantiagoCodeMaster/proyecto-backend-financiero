@@ -3,61 +3,63 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; // Asegúrate de importar la clase correcta
+use Illuminate\Notifications\Notifiable;
 
-class Empresa extends Model
-{   
+class Empresa extends Authenticatable // Extiende de Authenticatable
+{
+    use HasFactory, Notifiable; // Puedes combinar las declaraciones de uso
+
     protected $table = 'empresa';
     protected $primaryKey = 'id_empresa';
 
-    // Relación uno a muchos con Estado_Financiero
+    protected $fillable = [
+        'nombre_empresa',
+        'email',
+        'nit',
+        'rublo', 
+        'password'
+    ];
+
+    // Relaciones con otras tablas
     public function estadoFinancieros()
     {
         return $this->hasMany(EstadoFinanciero::class, 'id_empresa');
     }
 
-    // Relación uno a muchos con Patrimonio
     public function patrimonios()
     {
         return $this->hasMany(Patrimonio::class, 'id_empresa');
     }
 
-    // Relación uno a muchos con Ingresos_Utilidades_Gastos
     public function ingresosUtilidadesGastos()
     {
         return $this->hasMany(IngresoUtilidadGasto::class, 'id_empresa');
     }
 
-    // Relación uno a muchos con Movimientos
     public function movimientos()
     {
         return $this->hasMany(Movimiento::class, 'id_empresa');
     }
 
-    // Relación uno a muchos con Productos
     public function productos()
     {
         return $this->hasMany(Producto::class, 'id_empresa');
     }
 
-    // Relación uno a muchos con Cliente
     public function clientes()
     {
         return $this->hasMany(Cliente::class, 'id_empresa');
     }
 
-    // Relación uno a muchos con Indicadores_Financieros
     public function indicadoresFinancieros()
     {
         return $this->hasMany(IndicadorFinanciero::class, 'id_empresa');
-    } 
+    }
 
-    protected $fillable = [
-        'nombre_empresa',
-        'nit',
-        'rublo',
-    ];
-    
- 
-    
+    // Agregar el método para obtener la contraseña
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
 }

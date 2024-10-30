@@ -1,7 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Cliente;
 use App\Models\Empresa;
 use App\Models\EstadoFinanciero;
@@ -10,7 +17,6 @@ use App\Models\IngresoUtilidadGasto;
 use App\Models\Movimiento;
 use App\Models\Patrimonio;
 use App\Models\Producto;
-use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\DatoMacroeconomico;
 
@@ -42,7 +48,7 @@ class FormController extends Controller
     }
    
     public function showFormulario7(){
-        RETURN VIEW('formulario7');
+        return view('formulario7');
     } 
 
     public function showFormulario8() {
@@ -62,18 +68,18 @@ class FormController extends Controller
         $request->validate([ 
             'nombre_empresa' => 'required|string|max:255',
             'nit' => 'required|string|max:20',
-            'rublo' => 'required|string|max:255',
+            'contrseña' => 'required|string|max:255',
         ]);
 
         // Ingresar los datos a la base de datos
         Empresa::create([
             'nombre_empresa' => $request->input('nombre_empresa'),
             'nit' => $request->input('nit'),
-            'rublo' => $request->input('rublo'),
+            'contraseña' => $request->input('contraseña'),
         ]);
 
         // Guardar los datos en la sesión
-        $request->session()->put('datos', $request->only(['nombre_empresa', 'nit', 'rublo']));
+        $request->session()->put('datos', $request->only(['nombre_empresa', 'nit', 'rublo','contraseña']));
 
         // Redirigir a la página de formulario 2
         return redirect()->route('formulario2');
@@ -432,4 +438,5 @@ class FormController extends Controller
     // Mostrar un mensaje emergente de confirmación
     return redirect()->route('dashboard');
    }
+
 }

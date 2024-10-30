@@ -17,12 +17,11 @@
                 </div>
             </div>   
         </header>
-
+        
         <div class="px-6 py-4">
             <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Querido usuario</h1>
             <h3 class="mb-2">En este formulario tendrá la oportunidad de llenar los datos de la empresa que usted representa. Los datos financieros son de rigurosa seguridad, por lo mismo estos datos nadie más que usted tendrá acceso.</h3>
-            <h3 class="mb-2">Como representante de su empresa, usted será el responsable de guardar los datos de sesión de inicio, guarde el número de NIT y si llega a haber un cambio del NIT, usted será el responsable de volver a actualizarlo en la web.</h3>
-            <h3 class="mb-4">Tenga en cuenta que la contraseña debe ser la misma que registraron en el apartado de registro.</h3>
+            <h3 class="mb-2">Como representante de su empresa, usted será el responsable de guardar los datos de sesión de inicio.</h3>
         </div>
 
         <!-- Main Form Content -->
