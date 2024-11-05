@@ -15,6 +15,7 @@ class EstadoFinanciero extends Model
     {
         return $this->belongsTo(Empresa::class, 'id_empresa');
     }
+
     protected $fillable = [
         'fecha',
         'efectivo_equivalentes',
@@ -44,5 +45,6 @@ class EstadoFinanciero extends Model
         'pasivo_beneficios_empleados_no_corriente',
         'pasivo_por_impuesto_diferido',
         'provisiones_no_corriente',
+        'id_empresa', 
     ];
 }

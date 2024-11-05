@@ -19,6 +19,7 @@ class Cliente extends Model
     protected $fillable = [
         "nombre_cliente",
         "cedula_nit_cliente",
-        'compras_mes'
+        'compras_mes',
+        'id_empresa',
     ];
 }

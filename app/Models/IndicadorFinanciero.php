@@ -42,6 +42,7 @@ class IndicadorFinanciero extends Model
        'cobertura_deuda',
        'costo_pasivo_total',
        'costo_deuda_financiera',
-       'costo_patrimonio'
+       'costo_patrimonio',
+       'id_empresa',
     ];
 }

@@ -23,6 +23,7 @@ class Patrimonio extends Model
          'otro_resultado_integral',
          'utilidad_periodo',
          'patrimonio_atributable_controladoras',
-         'participaciones_no_controladoras'
+         'participaciones_no_controladoras',
+         'id_empresa',
     ];
 }

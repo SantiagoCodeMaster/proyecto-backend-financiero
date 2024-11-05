@@ -38,6 +38,7 @@ class IngresoUtilidadGasto extends Model
      'utilidad_periodo_operaciones_continuadas',
      'operaciones_discontinuadas',
      'utilidad_neta_periodo',
+     'id_empresa'
     ];
     }
 
