@@ -10,6 +10,8 @@ use App\Models\DatoMacroeconomico;
 use App\Models\Movimiento;
 use App\Models\Patrimonio;
 use App\Models\IngresoUtilidadGasto;
+use App\Http\Controllers\DataController;
+
 
 
 Route::get('/', function () {
@@ -43,11 +45,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/formulario_cliente',[FinancialFormController::class,'showFormulariocliente'])->name('formulario_cliente');
     Route::post('/formulario_cliente',[FinancialFormController::class,'saveClientData'])->name('formulario_cliente.store');
  
-    Route::get('/algoritm',function(){
-        return view('algoritm');
-    })->name('algoritm');
+    Route::get('/algoritm',[DataController::class,'showAlgorithm'])->name('algoritm');
+    Route::get('/algoritm',[DataController::class,'getDataForModel'])->name('algoritm.store');
 
     Route::get('/show',[IndicadoresFinancieros::class,'index'])->name('show');
+
+    Route::get('/run-model', [DataController::class, 'runAllModels']);
+    
  
 }); 
 

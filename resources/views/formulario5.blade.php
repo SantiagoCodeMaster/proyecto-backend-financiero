@@ -39,9 +39,9 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
                                 </svg>
                             </a>
- 
+  
                             <!-- Register Section -->
-                            <a href="{{ route('algoritm') }}"
+                            <a href="{{ route('algoritm.store') }}"
                                class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-md ring-1 ring-gray-200 transition duration-300 hover:bg-gray-50 dark:bg-gray-800 dark:ring-gray-700 hover:ring-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF2D20]">
                                 <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
                                     <svg class="size-5 sm:size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
