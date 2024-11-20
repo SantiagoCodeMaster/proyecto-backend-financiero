@@ -41,23 +41,25 @@
                             </a>
   
                             <!-- Register Section -->
-                            <a href="{{ route('algoritm.store') }}"
-                               class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-md ring-1 ring-gray-200 transition duration-300 hover:bg-gray-50 dark:bg-gray-800 dark:ring-gray-700 hover:ring-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF2D20]">
-                                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                                    <svg class="size-5 sm:size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <path d="M4 12l-1-1 4-4 1 1-3 3L4 12zm1 1h12v2H5v-2zm0-4h12v2H5v-2z" fill="#FF2D20"/>
+                            <form action="{{ route('algoritm') }}" >
+                                @csrf
+                                <button type="submit" class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-md ring-1 ring-gray-200 transition duration-300 hover:bg-gray-50 dark:bg-gray-800 dark:ring-gray-700 hover:ring-gray-200 focus:outline-none focus:ring-2 focus:ring-[#FF2D20]">
+                                    <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
+                                        <svg class="size-5 sm:size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path d="M4 12l-1-1 4-4 1 1-3 3L4 12zm1 1h12v2H5v-2zm0-4h12v2H5v-2z" fill="#FF2D20"/>
+                                        </svg>
+                                    </div>
+                                    <div class="pt-3 sm:pt-5">
+                                        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Mostrar resultados financieros con sus predicciones</h2>
+                                        <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                                            En este apartado podemos seguir a evaluar los resultados.
+                                        </p>
+                                    </div>
+                                    <svg class="w-6 h-6 shrink-0 stroke-[#FF2D20]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
                                     </svg>
-                                </div>
-                                <div class="pt-3 sm:pt-5">
-                                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Mostrar resultados financieros con sus predicciones</h2>
-                                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
-                                        En este apartado podemos seguir a evaluar los resultados.
-                                    </p>
-                                </div>
-                                <svg class="w-6 h-6 shrink-0 stroke-[#FF2D20]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
-                                </svg>
-                            </a>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

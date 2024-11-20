@@ -12,113 +12,121 @@ use App\Models\Patrimonio;
 use App\Models\IngresoUtilidadGasto;
 use App\Models\IndicadorFinanciero;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\ExecutePythonScript;
+use Illuminate\Support\Facades\DB;
+use App\Models\Prediccion;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class DataController extends Controller
 {
-    // Método para mostrar la vista del algoritmo
-    public function showAlgorithm()
+    // Método para mostrar la vista con los resultados financieros y las predicciones
+    public function getDataForModel()
     {
-        return view('algoritm');
+         // Obtener el id_empresa del usuario autenticado
+    $id_empresa = Auth::user()->id_empresa;
+
+    // Consultar los datos de la base de datos
+    $estadoFinanciero = EstadoFinanciero::where('id_empresa', $id_empresa)->get();
+    $datosMacro = DatoMacroeconomico::all();
+    $patrimonio = Patrimonio::where('id_empresa', $id_empresa)->get();
+    $movimientos = IngresoUtilidadGasto::where('id_empresa', $id_empresa)->get();
+    $indicadores = IndicadorFinanciero::where('id_empresa', $id_empresa)->get();
+
+    // Pasar los datos a la vista
+    return view('algoritm', compact('estadoFinanciero', 'patrimonio', 'movimientos', 'indicadores'));
+
     }
 
-    // Método para obtener datos de la empresa y ejecutar el modelo
-    public function getDataForModel(Request $request)
+    // Método para obtener datos de la empresa y enviar el proceso a la cola para ejecutar el modelo
+    public function recivedatamodel(Request $request)
     {
-        // Verifica si el usuario está autenticado
-        if (Auth::check()) {
-            // Obtiene el id_empresa del usuario autenticado
-            $id_empresa = Auth::user()->id_empresa;
+          // Validación básica de los datos ingresados
+          $validatedData = $request->validate([
+         'email' => 'required|email',
+         'password' => 'required',
+          ]);
 
-            // Obtiene los datos relacionados con el id_empresa
-            $estadoFinanciero = EstadoFinanciero::where('id_empresa', $id_empresa)->get();
-            $datosMacro = DatoMacroeconomico::all();
-            $patrimonio = Patrimonio::where('id_empresa', $id_empresa)->get();
-            $movimientos = IngresoUtilidadGasto::where('id_empresa', $id_empresa)->get();
-            $indicadores = IndicadorFinanciero::where('id_empresa', $id_empresa)->get();
+          // Obtener los datos del usuario autenticado
+          $user = Auth::user();
 
-            // Verificar si los datos existen
-            if ($estadoFinanciero->isNotEmpty() || $datosMacro->isNotEmpty() || $patrimonio->isNotEmpty() || $movimientos->isNotEmpty() || $indicadores->isNotEmpty()) {
-                // Prepara los datos en un formato adecuado para Python
-                $inputData = [
-                    'estadoFinanciero' => $estadoFinanciero,
-                    'datosMacro' => $datosMacro,
-                    'patrimonio' => $patrimonio,
-                    'movimientos' => $movimientos,
-                    'indicadores' => $indicadores,
-                ];
+         // Verificar que el email y la contraseña coincidan con el usuario autenticado
+         if ($user->email !== $validatedData['email'] || !Hash::check($validatedData['password'], $user->password)) {
+            return redirect()->route('algoritm') 
+            ->with('error', 'Credenciales incorrectas');
+         }
 
-                // Guardar los datos en un archivo temporal
-                $jsonInput = json_encode($inputData);
-                $tempFile = storage_path('app/temp_input_data.json');
-                File::put($tempFile, $jsonInput);
+    
+        // Enviar los datos al servidor Python
+        $pythonResponse = Http::post('http://127.0.0.1:5000/api/algoritmo', $validatedData);
 
-                // Llamar a los modelos entrenados en Python con la ruta del archivo
-                $resultados = $this->ejecutarModelosPython($tempFile);
+        $id_empresa = Auth::user()->id_empresa;
 
-                // Verificar si hubo un error al ejecutar los modelos
-                if (isset($resultados['error'])) {
-                    return response()->json(['error' => $resultados['error']], 500);
-                }
+        $estadoFinanciero = EstadoFinanciero::where('id_empresa', $id_empresa)->get();
+        $datosMacro = DatoMacroeconomico::all();
+        $patrimonio = Patrimonio::where('id_empresa', $id_empresa)->get();
+        $movimientos = IngresoUtilidadGasto::where('id_empresa', $id_empresa)->get();
+        $indicadores = IndicadorFinanciero::where('id_empresa', $id_empresa)->get();
 
-                return response()->json([
-                    'resultados' => $resultados['predicciones']
-                ], 200);
-            } else {
-                return response()->json(['error' => 'No data found for this company'], 404);
-            }
-        }
+        $data = [
+        'estado_financiero' => $estadoFinanciero->toArray(),
+        'datos_macro' => $datosMacro->toArray(),
+        'patrimonio' => $patrimonio->toArray(),
+        'movimientos' => $movimientos->toArray(),
+        'indicadores' => $indicadores->toArray(),
+        ];
 
-        return response()->json(['error' => 'Unauthorized'], 401);
-    }
-
-    // Método para ejecutar los modelos en Python
-    protected function ejecutarModelosPython($filePath)
-    {
-        // Rutas a los modelos y datos
-        $path_modelos_lasso = storage_path('app/modelos_lasso');
-        $path_modelos_arima = storage_path('app/modelos_arima');
-        $input_file = $filePath; // El archivo con los datos de entrada
-        
-        // Cargar la ruta del script Python desde el archivo .env
-        $path_script_python = env('PYTHON_SCRIPT_PATH');
-        
-        // Verifica si la ruta es válida, ajustando según el entorno
-        if (app()->environment('local')) {
-            // Usa una ruta relativa o ajusta la ruta al entorno de desarrollo
-            $path_script_python = base_path('scripts/proyecto_finance/script.py');
+         // Manejar la respuesta del algoritmo
+        if ($pythonResponse->successful()) {
+            // Obtener los datos de la respuesta de Python
+            $resultados = $pythonResponse->json();
+            // Asegurarse de que los resultados se están recibiendo correctamente
+            dd($resultados);  // Muestra los resultados para depurar
+            return view('resultados', compact('resultados'));
         } else {
-            // Ajuste para entornos de producción
-            $path_script_python = base_path('scripts/proyecto_finance/script.py');
+           return back()->withErrors(['error' => 'Hubo un problema al procesar los datos.']);
         }
 
-        // Construye el comando de ejecución del script de Python
-        $command = 'python3 ' . escapeshellarg($path_script_python) . ' ' . 
-                    escapeshellarg($path_modelos_lasso) . ' ' . 
-                    escapeshellarg($path_modelos_arima) . ' ' . 
-                    escapeshellarg($input_file);
+        return response()->json($data);
+     #   if (Auth::check()) {
+      #      $id_empresa = Auth::user()->id_empresa;
 
-        // Ejecutar el comando y capturar la salida y errores
-        $output = shell_exec($command . ' 2>&1'); // Captura tanto la salida estándar como los errores
-        
-        // Log para ver el resultado
-        Log::info('Output del script Python: ' . $output);
+            // Consultar los datos financieros y macroeconómicos de la empresa
+        #    $estadoFinanciero = EstadoFinanciero::where('id_empresa', $id_empresa)->get();
+         #   $datosMacro = DatoMacroeconomico::all();
+          #  $patrimonio = Patrimonio::where('id_empresa', $id_empresa)->get();
+           # $movimientos = IngresoUtilidadGasto::where('id_empresa', $id_empresa)->get();
+           # $indicadores = IndicadorFinanciero::where('id_empresa', $id_empresa)->get();
 
-        // Verificar si la salida está vacía o si hubo un error
-        if (!$output) {
-            return ['error' => 'Error al ejecutar el modelo en Python'];
-        }
+            #if ($estadoFinanciero->isNotEmpty() || $datosMacro->isNotEmpty() || $patrimonio->isNotEmpty() || $movimientos->isNotEmpty() || $indicadores->isNotEmpty()) {
+             #   $inputData = [
+              #      'estadoFinanciero' => $estadoFinanciero,
+               #     'datosMacro' => $datosMacro,
+                #    'patrimonio' => $patrimonio,
+                 #   'movimientos' => $movimientos,
+                  #  'indicadores' => $indicadores,
+            #    ];
 
-        // Procesar el resultado de la ejecución
-        $resultado = json_decode($output, true);
+             #   $userId = auth()->id();
+             #    $fileName = 'temp_input_data_' . uniqid() . '.json';
+              #   $tempFile = storage_path("app/user_data/{$userId}/" . $fileName);
+               #  File::ensureDirectoryExists(storage_path("app/user_data/{$userId}"));
+                #  File::put($tempFile, $jsonInput);
 
-        // Verificar si hay error al decodificar el JSON
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            Log::error('Error al decodificar la respuesta JSON del modelo Python: ' . json_last_error_msg());
-            Log::error('Salida completa del script Python: ' . $output); // Log completo de la salida
-            return ['error' => 'Error al procesar la respuesta del modelo Python'];
-        }
+                // Normalizar la ruta para compatibilidad con Python
+                #$normalizedTempFile = str_replace('\\', '/', $tempFile);
 
-        // Retornar los resultados decodificados
-        return $resultado;
+                // Despachar el Job a la cola para ejecutar el script Python
+#                dispatch(new ExecutePythonScript($normalizedTempFile, Auth::id()));
+
+ #               return redirect()->route('algoritm')->with('message', 'Procesando los datos. Esto puede tardar unos minutos.');
+  #          } else {
+   #             return response()->json(['error' => 'No data found for this company'], 404);
+    #        }
+     #   }
+
+      #  return response()->json(['error' => 'Unauthorized'], 401);
     }
 }
