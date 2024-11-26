@@ -16,14 +16,32 @@
             </div>
         </header>
 
-        <!-- Mostrar los resultados -->
+        <!-- Mostrar los resultados o error -->
         <div class="p-4">
             <h2 class="text-xl font-bold">Resultados del Algoritmo</h2>
 
-            <!-- Mostrar los datos recibidos desde Python -->
-            <p><strong>Empresa ID:</strong> {{ $resultados['empresa'] }}</p>
-            <p><strong>Rentabilidad:</strong> {{ $resultados['rentabilidad'] }}</p>
-            <p><strong>Empleados:</strong> {{ $resultados['empleados'] }}</p>
+            <!-- Mostrar error si existe -->
+            @if (session('error'))
+                <div class="bg-red-500 text-white p-4 rounded-md">
+                    <strong>Error:</strong> {{ session('error') }}
+                </div>
+            @elseif(isset($resultados['predicciones']) && !empty($resultados['predicciones']))
+                <!-- Mostrar los datos recibidos desde Python -->
+                <p><strong>Mensaje:</strong> {{ $resultados['mensaje'] }}</p>
+
+                <!-- Mostrar las predicciones -->
+                <h3 class="font-semibold">Predicciones:</h3>
+                <ul>
+                    @foreach ($resultados['predicciones'] as $prediccion)
+                        <li>{{ $prediccion }}</li>
+                    @endforeach
+                </ul>
+            @else
+                <!-- Mostrar alerta si no llegaron los datos -->
+                <script>
+                    alert("Los datos nunca llegaron. Por favor, intenta nuevamente.");
+                </script>
+            @endif
         </div>
     </div>
 </body>

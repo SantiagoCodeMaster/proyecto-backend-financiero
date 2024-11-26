@@ -49,16 +49,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/algoritm', [DataController::class, 'getDataForModel'])->name('algoritm');
     Route::post('/algoritm/data', [DataController::class, 'recivedatamodel'])->name('algoritm.store');
 
-    Route::get('/show',[IndicadoresFinancieros::class,'index'])->name('show');
+    Route::get('/show',[FinancialFormController::class,'index'])->name('show');
 
 }); 
 
 
 
 
-
-Route::get('razon',[IndicadoresFinancieros::class,'razon_corriente'])->name('razon_corriente');
- 
 
 Route::get('/estado-financiero', function () {
     // Obtiene todos los datos de la tabla estado_financiero

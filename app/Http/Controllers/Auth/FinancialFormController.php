@@ -15,7 +15,6 @@ use App\Models\Empresa;
 use App\Models\EstadoFinanciero;
 use App\Models\IndicadorFinanciero;
 use App\Models\IngresoUtilidadGasto;
-use App\Models\Movimiento;
 use App\Models\Patrimonio;
 use App\Models\Producto;
 use Illuminate\Database\QueryException;
@@ -23,6 +22,19 @@ use App\Models\DatoMacroeconomico;
 
 class FinancialFormController extends Controller
 {
+    public function index() {
+        // Obtener el ID de la empresa asociada al usuario autenticado
+        $idEmpresa = Auth::user()->id_empresa;
+
+        // Consultar los datos de las tablas relacionadas con la empresa
+        $estadoFinanciero = EstadoFinanciero::where('id_empresa', $idEmpresa)->get();
+        $patrimonio = Patrimonio::where('id_empresa', $idEmpresa)->get();
+        $movimientos = IngresoUtilidadGasto::where('id_empresa', $idEmpresa)->get();
+        $indicadores = IndicadorFinanciero::where('id_empresa', $idEmpresa)->get();
+
+        // Pasar los datos a la vista
+        return view('show', compact('estadoFinanciero',  'patrimonio', 'movimientos', 'indicadores'));
+    }
     // Mostrar formularios
     public function showFormulario1() {
         return view('formulario1');
@@ -45,7 +57,7 @@ class FinancialFormController extends Controller
         return view('formulario5');
     } 
  
-    public function showFormulariocliente() {
+    public function showFormulariocliente() { 
         return view('formulario_cliente');
     }
     public function showDatos(){

@@ -59,9 +59,7 @@ class DataController extends Controller
          }
 
     
-        // Enviar los datos al servidor Python
-        $pythonResponse = Http::post('http://127.0.0.1:5000/api/algoritmo', $validatedData);
-
+        //verificamoes el id_empresa para filtrar los datos correctos de la empresa autenticada
         $id_empresa = Auth::user()->id_empresa;
 
         $estadoFinanciero = EstadoFinanciero::where('id_empresa', $id_empresa)->get();
@@ -78,18 +76,23 @@ class DataController extends Controller
         'indicadores' => $indicadores->toArray(),
         ];
 
+         // Enviar los datos al servidor Python
+         $pythonResponse = Http::post('http://127.0.0.1:5000/api/algoritmo', $data);
+
          // Manejar la respuesta del algoritmo
         if ($pythonResponse->successful()) {
-            // Obtener los datos de la respuesta de Python
-            $resultados = $pythonResponse->json();
-            // Asegurarse de que los resultados se están recibiendo correctamente
-            dd($resultados);  // Muestra los resultados para depurar
-            return view('resultados', compact('resultados'));
-        } else {
-           return back()->withErrors(['error' => 'Hubo un problema al procesar los datos.']);
-        }
+           // Obtener los datos de la respuesta de Python
+           $resultados = $pythonResponse->json();
 
-        return response()->json($data);
+           // Verificar si la respuesta contiene los datos esperados
+        if (isset($resultados['predicciones']) && !empty($resultados['predicciones'])) {
+            return view('results', ['resultados' => $resultados]);
+         } else {
+            return view('results')->with('error', 'No se recibieron las predicciones correctamente.');
+        }
+        } else {
+        return back()->withErrors(['error' => 'Hubo un problema al procesar los datos.']);
+        }
      #   if (Auth::check()) {
       #      $id_empresa = Auth::user()->id_empresa;
 
