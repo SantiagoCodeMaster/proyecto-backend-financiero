@@ -45,7 +45,7 @@
              @else
                  <span class="text-red-500">Usuario no tiene empresa asociada</span>
              @endif
-                <h1>Estos fueron los datos que ingresaste, por favor Verificar , una vez verificados  confirma tu correo y contraseña luego puedes dar continuar en la parte inferior para utilizar el algortimo.</h1>
+                <h1>Estos fueron los datos que ingresaste, por favor Verificar , una vez verificados   puedes dar continuar en la parte inferior para utilizar el algortimo.</h1>
                     <!-- Estado Financiero -->
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-white mt-6">Estado Financiero</h2>
                     @if($estadoFinanciero->isEmpty())
@@ -93,17 +93,10 @@
 </html>
 
 <br>
-<h1>por favor completa los datos de sesion antes de seguir: </h1> 
+
 <main class="flex-grow flex justify-start px-6">
     <form action="{{ route('algoritm.store') }}" method="POST" class="w-full max-w-lg space-y-4">
         @csrf
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <div class="flex justify-end"> 
             <button 
                 type="submit" 
                 class="bg-green-600 text-white font-bold py-3 px-6 text-lg rounded hover:bg-green-700 transition duration-300 ease-in-out transform hover:scale-105">

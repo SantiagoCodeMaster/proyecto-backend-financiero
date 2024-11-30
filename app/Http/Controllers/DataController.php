@@ -43,21 +43,10 @@ class DataController extends Controller
     // Método para obtener datos de la empresa y enviar el proceso a la cola para ejecutar el modelo
     public function recivedatamodel(Request $request)
     {
-          // Validación básica de los datos ingresados
-          $validatedData = $request->validate([
-         'email' => 'required|email',
-         'password' => 'required',
-          ]);
+         
 
-          // Obtener los datos del usuario autenticado
-          $user = Auth::user();
-
-         // Verificar que el email y la contraseña coincidan con el usuario autenticado
-         if ($user->email !== $validatedData['email'] || !Hash::check($validatedData['password'], $user->password)) {
-            return redirect()->route('algoritm') 
-            ->with('error', 'Credenciales incorrectas');
-         }
-
+         // Obtener los datos del usuario autenticado
+        $user = Auth::user();
     
         //verificamoes el id_empresa para filtrar los datos correctos de la empresa autenticada
         $id_empresa = Auth::user()->id_empresa;
@@ -77,22 +66,29 @@ class DataController extends Controller
         ];
 
          // Enviar los datos al servidor Python
-         $pythonResponse = Http::post('http://127.0.0.1:5000/api/algoritmo', $data);
+    try {
+      $pythonResponse = Http::post('http://127.0.0.1:5000/api/algoritmo', $data);
 
-         // Manejar la respuesta del algoritmo
-        if ($pythonResponse->successful()) {
-           // Obtener los datos de la respuesta de Python
-           $resultados = $pythonResponse->json();
+      // Manejar la respuesta del servidor Python
+      if ($pythonResponse->successful()) {
+          $resultados = $pythonResponse->json();
+          #dd($resultados);
 
-           // Verificar si la respuesta contiene los datos esperados
-        if (isset($resultados['predicciones']) && !empty($resultados['predicciones'])) {
-            return view('results', ['resultados' => $resultados]);
-         } else {
-            return view('results')->with('error', 'No se recibieron las predicciones correctamente.');
-        }
-        } else {
-        return back()->withErrors(['error' => 'Hubo un problema al procesar los datos.']);
-        }
+          // Verificar si la respuesta contiene las predicciones
+          if (isset($resultados['predicciones']) && is_array($resultados['predicciones']) && !empty($resultados['predicciones'])) {
+              return view('results', ['resultados' => $resultados]);
+          }
+
+          // Si no hay predicciones, enviar mensaje a la vista
+          return view('results')->with('error', 'No se recibieron las predicciones correctamente.');
+      }
+
+      // Error en la conexión con el servidor Python
+      return back()->withErrors(['error' => 'Hubo un problema al procesar los datos.']);
+  } catch (\Exception $e) {
+      // Manejo de excepciones en la conexión
+      return back()->withErrors(['error' => 'No se pudo conectar con el servidor Python.']);
+  }
      #   if (Auth::check()) {
       #      $id_empresa = Auth::user()->id_empresa;
 
