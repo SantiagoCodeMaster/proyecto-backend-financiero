@@ -30,7 +30,6 @@ class DataController extends Controller
 
     // Consultar los datos de la base de datos
     $estadoFinanciero = EstadoFinanciero::where('id_empresa', $id_empresa)->get();
-    $datosMacro = DatoMacroeconomico::all();
     $patrimonio = Patrimonio::where('id_empresa', $id_empresa)->get();
     $movimientos = IngresoUtilidadGasto::where('id_empresa', $id_empresa)->get();
     $indicadores = IndicadorFinanciero::where('id_empresa', $id_empresa)->get();
@@ -72,7 +71,7 @@ class DataController extends Controller
       // Manejar la respuesta del servidor Python
       if ($pythonResponse->successful()) {
           $resultados = $pythonResponse->json();
-          #dd($resultados);
+          
 
           // Verificar si la respuesta contiene las predicciones
           if (isset($resultados['predicciones']) && is_array($resultados['predicciones']) && !empty($resultados['predicciones'])) {
@@ -89,43 +88,6 @@ class DataController extends Controller
       // Manejo de excepciones en la conexión
       return back()->withErrors(['error' => 'No se pudo conectar con el servidor Python.']);
   }
-     #   if (Auth::check()) {
-      #      $id_empresa = Auth::user()->id_empresa;
-
-            // Consultar los datos financieros y macroeconómicos de la empresa
-        #    $estadoFinanciero = EstadoFinanciero::where('id_empresa', $id_empresa)->get();
-         #   $datosMacro = DatoMacroeconomico::all();
-          #  $patrimonio = Patrimonio::where('id_empresa', $id_empresa)->get();
-           # $movimientos = IngresoUtilidadGasto::where('id_empresa', $id_empresa)->get();
-           # $indicadores = IndicadorFinanciero::where('id_empresa', $id_empresa)->get();
-
-            #if ($estadoFinanciero->isNotEmpty() || $datosMacro->isNotEmpty() || $patrimonio->isNotEmpty() || $movimientos->isNotEmpty() || $indicadores->isNotEmpty()) {
-             #   $inputData = [
-              #      'estadoFinanciero' => $estadoFinanciero,
-               #     'datosMacro' => $datosMacro,
-                #    'patrimonio' => $patrimonio,
-                 #   'movimientos' => $movimientos,
-                  #  'indicadores' => $indicadores,
-            #    ];
-
-             #   $userId = auth()->id();
-             #    $fileName = 'temp_input_data_' . uniqid() . '.json';
-              #   $tempFile = storage_path("app/user_data/{$userId}/" . $fileName);
-               #  File::ensureDirectoryExists(storage_path("app/user_data/{$userId}"));
-                #  File::put($tempFile, $jsonInput);
-
-                // Normalizar la ruta para compatibilidad con Python
-                #$normalizedTempFile = str_replace('\\', '/', $tempFile);
-
-                // Despachar el Job a la cola para ejecutar el script Python
-#                dispatch(new ExecutePythonScript($normalizedTempFile, Auth::id()));
-
- #               return redirect()->route('algoritm')->with('message', 'Procesando los datos. Esto puede tardar unos minutos.');
-  #          } else {
-   #             return response()->json(['error' => 'No data found for this company'], 404);
-    #        }
-     #   }
-
-      #  return response()->json(['error' => 'Unauthorized'], 401);
+     
     }
 }

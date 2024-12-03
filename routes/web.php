@@ -53,7 +53,6 @@ Route::middleware('auth')->group(function () {
 
 }); 
 
-
 Route::get('/estado-financiero', function () {
     // Obtiene todos los datos de la tabla estado_financiero
     $estadoFinanciero = EstadoFinanciero::all();
